@@ -1,0 +1,16 @@
+{
+    "autoload": {
+        "psr-4": {
+          "SimpleDB\\": "src/"
+        }
+    },
+    "name": "cordeiro/simpledb",
+    "description": "Framework para banco de dados",
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "João Victor Cordeiro",
+        "email": "joaocordeiro2134@gmail.com"
+      }
+    ]
+}
