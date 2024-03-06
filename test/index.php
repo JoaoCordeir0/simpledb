@@ -8,10 +8,10 @@ use SimpleDB\Opers;
 class User extends Opers {
     
     private $table = 'users';
-    private $columns = [
-        'id:int', 
-        'nome:string', 
-        'email:string'
+    private $columns = [     
+        'nome:varchar(255):not null', 
+        'email:varchar(255):',
+        'status:int:not null'
     ];
 
     public function __construct() {        
@@ -21,10 +21,27 @@ class User extends Opers {
 
 // new SimpleDB\Info(); // Show php info
 
-$conn = new Connection('localhost', 'simpledb', 'root', '1234', 'mysql');
-$conn->conn();
+// $conn = new Connection('Dev');
+// $conn->conn();
 
-$user = new User();
-$user->operation('insert');
-$user->data(['name' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com']);
-$user->save();
+// $user = new User();
+// $user->operation('insert')
+//      ->data(['nome' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com', 'status' => 1])
+//      ->save();
+
+// $user = new User();
+// $user->data(['nome' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com', 'status' => 1])
+//      ->insert();
+
+// $user = new User;
+// $user->where(['id', 1])     
+//      ->like(['nome', 'cordeiro'])
+//      ->limit(10)
+//      ->search();
+
+$user = new User;
+$user->where(['status', 1])          
+     ->orderDesc()
+     ->search();
+
+print_r($user->result());

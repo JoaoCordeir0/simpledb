@@ -2,26 +2,25 @@
 
 namespace SimpleDB;
 
+use Exception;
 use PDOException;
 use PDO;
 
 class Connection {
 
-    private $servername;
-    private $username;
-    private $password;
-    private $dbname; 
+    private $bank;
+    private $host;
+    private $uid;
+    private $pwd;
+    private $db; 
     private $conn;
 
-    public function __construct($servername, $dbname, $username, $password, $bank) 
-    {
-        $this->servername = $servername;
-        $this->dbname = $dbname;
-        $this->username = $username;
-        $this->password = $password;            
+    public function __construct($mode = 'Prod') 
+    {     
+        self::setVariables($mode);
 
-        switch($bank) {
-            case 'mysql':
+        switch($this->bank) {
+            case 'mysql':                
                 $this->setConnMysql();
                 break;
             case 'sqlserver':
@@ -33,14 +32,14 @@ class Connection {
     public function setConnMysql() {
         try 
         {
-            $servername = $this->servername;
-            $dbname = $this->dbname;
-            $db = new PDO("mysql:host=$servername;dbname=$dbname", $this->username, $this->password);            
+            $host = $this->host;
+            $dbname = $this->db;
+            $db = new PDO("mysql:host=$host;dbname=$dbname", $this->uid, $this->pwd);            
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);   
-            
+
             $this->conn = $db;
 
-            print 'Connection OK' . PHP_EOL;
+            print 'Mysql - Connection OK' . PHP_EOL;
         } 
         catch(PDOException $e) 
         {
@@ -51,14 +50,14 @@ class Connection {
     public function setConnSqlserver() {
         try 
         {
-            $serverName = $this->servername;
-            $dataBase = $this->dbname;                                                            
-            $db = new PDO("sqlsrv:server=$serverName; Database=$dataBase", $this->username, $this->password);    
+            $host = $this->host;
+            $dbname = $this->db;                                                            
+            $db = new PDO("sqlsrv:server=$host; Database=$dbname", $this->uid, $this->pwd);    
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $this->conn = $db;
 
-            print 'Connection OK' . PHP_EOL;
+            print 'Sqlserver - Connection OK' . PHP_EOL;
         } 
         catch (PDOException $e) 
         {                            
@@ -68,5 +67,39 @@ class Connection {
 
     public function conn() {
         return $this->conn;
+    }
+
+    public function setVariables($mode) {
+        $dir_file = '';
+        
+        switch($mode) {
+            case 'Prod': 
+                $dir_file = dirname(dirname(__DIR__)) . '/database.db'; 
+                break;
+            case 'Dev': 
+                $dir_file = dirname(__DIR__) . '/database.db'; 
+                break;
+        }
+       
+        $file = fopen($dir_file, 'r');
+       
+        if ($file) {          
+            for ($row = fgets($file); $row !== false; $row = fgets($file)) {                
+                $splitrow = explode('=', $row);
+                if ($splitrow[0] == 'bank')
+                    $this->bank = trim($splitrow[1]);
+                if ($splitrow[0] == 'host')
+                    $this->host = trim($splitrow[1]);
+                if ($splitrow[0] == 'db')
+                    $this->db = trim($splitrow[1]);
+                if ($splitrow[0] == 'uid')
+                    $this->uid = trim($splitrow[1]);
+                if ($splitrow[0] == 'pwd')
+                    $this->pwd = trim($splitrow[1]);
+            }                
+            fclose($file);
+        } else {            
+            throw new Exception('Unable to open or locate database.db');
+        }
     }
 }
