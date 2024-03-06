@@ -1,0 +1,5 @@
+bank=mysql
+host=localhost
+db=simpledb
+uid=root
+pwd=1234
