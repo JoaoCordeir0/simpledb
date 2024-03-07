@@ -86,16 +86,24 @@ class Connection {
         if ($file) {          
             for ($row = fgets($file); $row !== false; $row = fgets($file)) {                
                 $splitrow = explode('=', $row);
-                if ($splitrow[0] == 'bank')
-                    $this->bank = trim($splitrow[1]);
-                if ($splitrow[0] == 'host')
-                    $this->host = trim($splitrow[1]);
-                if ($splitrow[0] == 'db')
-                    $this->db = trim($splitrow[1]);
-                if ($splitrow[0] == 'uid')
-                    $this->uid = trim($splitrow[1]);
-                if ($splitrow[0] == 'pwd')
-                    $this->pwd = trim($splitrow[1]);
+                switch($splitrow[0])
+                {
+                    case 'bank': 
+                        $this->bank = trim($splitrow[1]);
+                        break;
+                    case 'host':
+                        $this->host = trim($splitrow[1]);
+                        break;
+                    case 'db':
+                        $this->db = trim($splitrow[1]);
+                        break;
+                    case 'uid':
+                        $this->uid = trim($splitrow[1]);
+                        break;
+                    case 'pwd':
+                        $this->pwd = trim($splitrow[1]);
+                        break;
+                }                    
             }                
             fclose($file);
         } else {            

@@ -5,6 +5,7 @@ namespace SimpleDB;
 interface Base 
 {        
     public function data(array $data);
+    public function columns(array $columns);
     public function where(array $where);
     public function orWhere(array $orwhere);
     public function like(array $like);

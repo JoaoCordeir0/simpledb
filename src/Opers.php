@@ -37,6 +37,12 @@ class Opers implements Base
         $this->data = $data;
         return $this;
     }
+
+    public function columns(array $columns) 
+    {
+        $this->columns = $columns;
+        return $this;
+    }
     
     public function where(array $where) 
     {

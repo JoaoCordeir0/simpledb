@@ -39,10 +39,11 @@ _> composer require simpledb/simpledb
 
 ```php
     $user = new User;
-    $user->where(['id', 1])     
+    $user->columns(['nome', 'email'])     
+         ->where(['id', 1])     
          ->like(['nome', 'cordeiro'])
          ->limit(10)
-         ->select(); // SELECT id, nome, email FROM users WHERE id = "1" AND nome LIKE "%cordeiro%" LIMIT 10
+         ->select(); // SELECT nome, email FROM users WHERE id = "1" AND nome LIKE "%cordeiro%" LIMIT 10
 
     print_r($user->result()); // Object()
 ```

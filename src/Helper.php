@@ -48,11 +48,20 @@ class Helper {
 
     public static function unpackColumns(array $columns) 
     {
-        $strColumns = '';
+        $flagAll = false;
+        $strColumns = '';        
         foreach ($columns as $column) {
-            $exp = explode(':', $column);
-            $strColumns .= $exp[0] . ', ';
+            if (stripos($column, ':') !== false) {
+                $exp = explode(':', $column);
+                $strColumns .= $exp[0] . ', ';
+                $flagAll = true;
+            } else {
+                $strColumns .= $column . ', ';
+            }            
         }
+
+        if ($flagAll)
+            return ' id, ' . substr($strColumns, 0, -2) . ', created_at';   
         return substr($strColumns, 0, -2);        
     }
 

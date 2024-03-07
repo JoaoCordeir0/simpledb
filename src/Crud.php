@@ -55,18 +55,23 @@ class Crud
             $orderasc = strlen($this->oper->getOrderasc()) > 0 ? ' ORDER BY ' . $this->oper->getOrderasc() . ' ASC' : '';     
             $orderdesc = strlen($this->oper->getOrderdesc()) > 0 ? ' ORDER BY ' . $this->oper->getOrderdesc() . ' DESC' : '';     
             $order = $orderasc . $orderdesc;
-    
-            $query = "SELECT id, " . Helper::unpackColumns($this->oper->getColumns()) . " FROM " . $this->oper->getTable() . Helper::unpackWhere($this->oper->getWhere(), $this->oper->getOrwhere(), $this->oper->getLike()) . $order . Helper::unpackLimit($this->oper->getLimit());
+            
+            $query = "SELECT " . Helper::unpackColumns($this->oper->getColumns()) . " FROM " . $this->oper->getTable() . Helper::unpackWhere($this->oper->getWhere(), $this->oper->getOrwhere(), $this->oper->getLike()) . $order . Helper::unpackLimit($this->oper->getLimit());
             $query = str_replace('  ', ' ', $query);
             
-            // print($query . PHP_EOL);
+            print($query . PHP_EOL);
             
             $select = $this->oper->getConn()->prepare($query);
             $select->execute();
            
+            $obj = [];
+
             if ($select->rowCount() > 1)
-                return (object) $select->fetchAll(\PDO::FETCH_ASSOC);      
-            return (object) $select->fetch(\PDO::FETCH_ASSOC);         
+                $obj = $select->fetchAll(\PDO::FETCH_ASSOC);    
+            else if ($select->rowCount() == 1) 
+                $obj = $select->fetch(\PDO::FETCH_ASSOC);         
+            
+            return (object) $obj;
         }
         catch (Exception $e)
         {
