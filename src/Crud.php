@@ -59,7 +59,7 @@ class Crud
             $query = "SELECT " . Helper::unpackColumns($this->oper->getColumns()) . " FROM " . $this->oper->getTable() . Helper::unpackWhere($this->oper->getWhere(), $this->oper->getOrwhere(), $this->oper->getLike()) . $order . Helper::unpackLimit($this->oper->getLimit());
             $query = str_replace('  ', ' ', $query);
             
-            print($query . PHP_EOL);
+            // print($query . PHP_EOL);
             
             $select = $this->oper->getConn()->prepare($query);
             $select->execute();
