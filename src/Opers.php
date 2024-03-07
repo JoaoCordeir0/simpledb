@@ -18,13 +18,15 @@ class Opers implements Base
 
     public function __construct($table, $columns, $data = [], $where = [], $orwhere = [], $like = [], $orderasc = '', $orderdesc = '', $limit = 0)
     {           
-        $this->conn = (new Connection('Dev'))->conn();
+        $this->conn = (new Connection())->conn();
         $this->table = $table;
         $this->columns = $columns;
         $this->data = $data;
         $this->where = $where;
         $this->orwhere = $orwhere;
         $this->like = $like;
+        $this->orderasc = $orderasc;
+        $this->orderdesc = $orderdesc;
         $this->limit = $limit;
 
         new Helper($table, $columns, $this->conn);    
