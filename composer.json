@@ -4,7 +4,7 @@
           "SimpleDB\\": "src/"
         }
     },
-    "name": "simpledatabase/simpledb",
+    "name": "simpledb/simpledb",
     "description": "Framework para banco de dados",
     "license": "MIT",
     "authors": [
