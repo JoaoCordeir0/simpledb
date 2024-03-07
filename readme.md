@@ -21,17 +21,17 @@
 
     class User extends Opers {
     
-    private $table = 'users';
-    private $columns = [     
-        'nome:varchar(255):not null', 
-        'email:varchar(255):',
-        'status:int:not null'
-    ];
-
-    public function __construct() {        
-        parent::__construct($this->table, $this->columns);
-    }   
-}
+        private $table = 'users';
+        private $columns = [     
+            'nome:varchar(255):not null', 
+            'email:varchar(255):',
+            'status:int:not null'
+        ];
+    
+        public function __construct() {        
+            parent::__construct($this->table, $this->columns);
+        }   
+    }
 ```
 
 ###### Comands with table:
