@@ -74,7 +74,7 @@ class Connection {
         
         switch($mode) {
             case 'Prod': 
-                $dir_file = dirname(dirname(__DIR__)) . '/database.db'; 
+                $dir_file = dirname(dirname(dirname(dirname(__DIR__)))) . '/database.db'; 
                 break;
             case 'Dev': 
                 $dir_file = dirname(__DIR__) . '/database.db'; 
