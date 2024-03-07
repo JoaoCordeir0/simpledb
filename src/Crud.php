@@ -63,7 +63,10 @@ class Crud
             
             $select = $this->oper->getConn()->prepare($query);
             $select->execute();
-            return (object) $select->fetchAll(\PDO::FETCH_ASSOC);      
+           
+            if ($select->rowCount() > 1)
+                return (object) $select->fetchAll(\PDO::FETCH_ASSOC);      
+            return (object) $select->fetch(\PDO::FETCH_ASSOC);         
         }
         catch (Exception $e)
         {
