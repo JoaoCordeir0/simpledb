@@ -19,6 +19,33 @@ class Helper {
         self::checkTableExists();
     }
 
+    public function checkTableExists() 
+    {      
+        $sql = 'SHOW TABLES LIKE "' . $this->table . '"';        
+        $result = $this->conn->prepare($sql);
+        $result->execute();
+
+        if ($result->rowCount() == 0) {
+            self::create();
+        }
+    }
+
+    public function create() 
+    {
+        $columns = '';
+        foreach ($this->columns as $column) {
+            $exp = explode(':', $column);
+            $columns .= $exp[0] . ' ' . $exp[1] . ' ' . $exp[2] . ', ';
+        }
+
+        $columns = substr($columns, 0, -2);
+        $columns = str_replace(' ,', ',', $columns);
+
+        $sql = 'CREATE TABLE IF NOT EXISTS ' . $this->table . ' (id INT AUTO_INCREMENT PRIMARY KEY, ' . $columns . ', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)';
+        $create = $this->conn->prepare($sql);
+        $create->execute();
+    }    
+
     public static function unpackColumns(array $columns) 
     {
         $strColumns = '';
@@ -81,33 +108,6 @@ class Helper {
         if (count($where) || count($orwhere) || count($like))
             return $query;
         return '';
-    }
-
-    public function checkTableExists() 
-    {      
-        $sql = 'SHOW TABLES LIKE "' . $this->table . '"';        
-        $result = $this->conn->prepare($sql);
-        $result->execute();
-
-        if ($result->rowCount() == 0) {
-            self::create();
-        }
-    }
-
-    public function create() 
-    {
-        $columns = '';
-        foreach ($this->columns as $column) {
-            $exp = explode(':', $column);
-            $columns .= $exp[0] . ' ' . $exp[1] . ' ' . $exp[2] . ', ';
-        }
-
-        $columns = substr($columns, 0, -2);
-        $columns = str_replace(' ,', ',', $columns);
-
-        $sql = 'CREATE TABLE IF NOT EXISTS ' . $this->table . ' (id INT AUTO_INCREMENT PRIMARY KEY, ' . $columns . ')';
-        $create = $this->conn->prepare($sql);
-        $create->execute();
-    }     
+    }    
 }
 

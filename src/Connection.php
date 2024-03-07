@@ -39,7 +39,7 @@ class Connection {
 
             $this->conn = $db;
 
-            print 'Mysql - Connection OK' . PHP_EOL;
+            // print 'Mysql - Connection OK' . PHP_EOL;
         } 
         catch(PDOException $e) 
         {
@@ -57,7 +57,7 @@ class Connection {
 
             $this->conn = $db;
 
-            print 'Sqlserver - Connection OK' . PHP_EOL;
+            // print 'Sqlserver - Connection OK' . PHP_EOL;
         } 
         catch (PDOException $e) 
         {                            
