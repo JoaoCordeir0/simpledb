@@ -1,6 +1,6 @@
 # How to use:
 
->_ composer require simpledb/simpledb
+_> composer require simpledb/simpledb
 
 ### In php: 
 
