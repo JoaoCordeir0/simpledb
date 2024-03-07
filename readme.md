@@ -1,16 +1,6 @@
 # How to use:
 
-##### git clone https://github.com/JoaoCordeir0/simpledb
-
-##### In composer.json:
-
-```json
-    "autoload": {
-        "psr-4": {
-            "SimpleDB\\": "vendor/simpledb/src"
-        }
-    },
-```
+##### composer require simpledb/simpledb
 
 ### In php: 
 
