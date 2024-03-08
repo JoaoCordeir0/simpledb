@@ -19,6 +19,19 @@ class Helper {
         self::checkTableExists();
     }
 
+    public static function getCrudInstance($bank, $obj)
+    {
+        switch($bank)
+        {
+            case 'mysql':
+                return new Mysql\Crud($obj);
+                break;
+            case 'sqlserver': 
+                return new Sqlserver\Crud($obj);
+                break;
+        }
+    }   
+    
     public function checkTableExists() 
     {      
         $sql = 'SHOW TABLES LIKE "' . $this->table . '"';        
@@ -46,23 +59,23 @@ class Helper {
         $create->execute();
     }    
 
-    public static function unpackColumns(array $columns) 
-    {
-        $flagAll = false;
+    public static function unpackColumns(array $columns, string $action = 'select') 
+    {        
+        $flagSingleColumns = false;
         $strColumns = '';        
         foreach ($columns as $column) {
             if (stripos($column, ':') !== false) {
                 $exp = explode(':', $column);
-                $strColumns .= $exp[0] . ', ';
-                $flagAll = true;
+                $strColumns .= $exp[0] . ', ';                
             } else {
                 $strColumns .= $column . ', ';
+                $flagSingleColumns = true;
             }            
         }
 
-        if ($flagAll)
-            return ' id, ' . substr($strColumns, 0, -2) . ', created_at';   
-        return substr($strColumns, 0, -2);        
+        if ($action != 'select' || $flagSingleColumns)            
+            return substr($strColumns, 0, -2);        
+        return 'id, ' . substr($strColumns, 0, -2) . ', created_at';   
     }
 
     public static function unpackLimit(int $limit) 
@@ -73,50 +86,24 @@ class Helper {
         return ' LIMIT ' . $limit;
     }
 
-    public static function unpackWhere($where, $orwhere, $like) 
-    {            
-        if (count($where) > 0 && !(count($where) % 2 == 0)) {
-            throw new Exception('In where, enter a column and a value.');
-        }
-        if (count($orwhere) > 0 && !(count($orwhere) % 2 == 0)) {
-            throw new Exception('In orwhere enter a column and a value.');
-        }
-        if (count($like) > 0 && !(count($like) % 2 == 0)) {
-            throw new Exception('In like enter a column and a value.');
-        }
-                
-        $query = ' WHERE '; 
+    public static function unpackOrderBy(string $order) 
+    {
+        if (! stripos($order, ':') !== false) {
+            return '';
+        }                 
+        $exp = explode(':', $order);
+        return ' ORDER BY ' . $exp[0] . ' ' . $exp[1];
+    }
 
-        if (count($where)) 
-        {
-            ctype_digit($where[1]) 
-            ?
-            $query .= $where[0] . ' = ' . $where[1]
-            :
-            $query .= $where[0] . ' = "' . $where[1] . '"';
-        }            
-        
-        if (count($orwhere)) 
-        {
-            ctype_digit($orwhere[1]) 
-            ?
-            $query .= ' (' . $orwhere[0] . ' = ' . $orwhere[1] . ')'
-            :
-            $query .= ' (' . $orwhere[0] . ' = "' . $orwhere[1] . '")';
-        }            
-        
-        if (count($like)) 
-        {            
-            strlen($query) > 7 
-            ? 
-            $query .= ' AND ' . $like[0] . ' LIKE "%' . $like[1] . '%" ' 
-            : 
-            $query .= ' ' . $like[0] . ' LIKE "%' . $like[1] . '%" ';                            
+    public static function unpackWhere($where) 
+    {            
+        if (strlen($where) < 2) {
+            return '';
         }
-            
-        if (count($where) || count($orwhere) || count($like))
-            return $query;
-        return '';
-    }    
+
+        $where = ' WHERE ' . $where; 
+        
+        return $where;       
+    }       
 }
 

@@ -2,65 +2,82 @@
 
 namespace SimpleDB;
 
-class Opers implements Base
-{   
-    private $conn;
+use SimpleDB\Interface\InterfaceOpers;
+
+class Opers implements InterfaceOpers
+{       
+    private $db;
     private $table;
     private $columns;
     private $data;
-    private $where;
-    private $orwhere;
-    private $like;
+    private $where;    
     private $limit;
-    private $orderasc;
-    private $orderdesc;
-    private $result;   
+    private $debug;
+    private $orderby;    
+    private $result;       
 
-    public function __construct($table, $columns, $data = [], $where = [], $orwhere = [], $like = [], $orderasc = '', $orderdesc = '', $limit = 0)
+    public function __construct($table, $columns, $data = [], $where = '', $debug = false, $orderby = '', $limit = 0)
     {           
-        $this->conn = (new Connection())->conn();
+        $this->db = new Connection();     
         $this->table = $table;
         $this->columns = $columns;
-        $this->data = $data;
+        $this->data = $data;                     
         $this->where = $where;
-        $this->orwhere = $orwhere;
-        $this->like = $like;
-        $this->orderasc = $orderasc;
-        $this->orderdesc = $orderdesc;
-        $this->limit = $limit;
+        $this->orderby = $orderby;        
+        $this->limit = $limit;        
+        $this->debug = $debug;        
 
-        new Helper($table, $columns, $this->conn);    
+        new Helper($table, $columns, $this->db->conn());    
     }  
+
+    /**
+     * Opers
+     */       
+    public function get() 
+    {
+        $crud = Helper::getCrudInstance($this->db->bank(), $this);
+        $this->result = $crud->selectDB();
+    }
+
+    public function insert() 
+    {
+        $crud = Helper::getCrudInstance($this->db->bank(), $this);
+        $crud->insertDB();
+    }
+
+    public function update() 
+    {
+        $crud = Helper::getCrudInstance($this->db->bank(), $this);
+        $crud->updateDB();
+    }
+
+    public function delete() 
+    {
+        $crud = Helper::getCrudInstance($this->db->bank(), $this);
+        $crud->deleteDB();
+    }
+
+    /**
+     * Setters
+     */
+    public function select(array $columns = []) 
+    {        
+        if (! empty($columns))        
+            $this->columns = $columns;
+        return $this;
+    }
 
     public function data(array $data) 
     {
         $this->data = $data;
         return $this;
     }
-
-    public function columns(array $columns) 
-    {
-        $this->columns = $columns;
-        return $this;
-    }
-    
-    public function where(array $where) 
+        
+    public function where(string $where) 
     {
         $this->where = $where;
         return $this;
-    }
-   
-    public function orWhere(array $orwhere) 
-    {
-        $this->orwhere = $orwhere;
-        return $this;
-    }
-
-    public function like(array $like) 
-    {
-        $this->like = $like;
-        return $this;
-    }
+    }   
 
     public function limit(int $limit) 
     {
@@ -68,61 +85,36 @@ class Opers implements Base
         return $this;
     }
 
-    public function orderAsc(string $col = 'id') 
+    public function orderby(string $col = 'id', string $action = 'ASC') 
     {
-        $this->orderasc = $col;
+        $this->orderby = $col . ':' . $action;
+        return $this;
+    }    
+
+    public function debug(bool $debug) 
+    {
+        $this->debug = $debug;
         return $this;
     }
 
-    public function orderDesc(string $col = 'id') 
-    {
-        $this->orderdesc = $col;
-        return $this;
-    }
-
+    /**
+     * Getters
+     */
     public function getTable() { return $this->table; }
     
     public function getColumns() { return $this->columns; }
     
-    public function getConn() { return $this->conn; }
+    public function getConn() { return $this->db->conn(); }
     
     public function getData() { return $this->data; }
 
     public function getWhere() { return $this->where; }
 
-    public function getOrWhere() { return $this->orwhere; }
-
-    public function getLike() { return $this->like; }
-
     public function getLimit() { return $this->limit; }
 
-    public function getOrderAsc() { return $this->orderasc; }
+    public function getDebug() { return $this->debug; }
 
-    public function getOrderDesc() { return $this->orderdesc; }
+    public function getOrderBy() { return $this->orderby; }    
 
     public function result() { return $this->result; }
-
-    public function insert() 
-    {
-        $insert = new Crud((object) $this);
-        $insert->insertDB();
-    }
-
-    public function select() 
-    {
-        $select = new Crud((object) $this);
-        $this->result = $select->selectDB();
-    }
-
-    public function update() 
-    {
-        $update = new Crud((object) $this);
-        $update->updateDB();
-    }
-
-    public function delete() 
-    {
-        $delete = new Crud((object) $this);
-        $delete->deleteDB();
-    }
 }

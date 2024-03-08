@@ -15,9 +15,9 @@ class Connection {
     private $db; 
     private $conn;
 
-    public function __construct($mode = 'Prod') 
+    public function __construct($mode = 'Dev') 
     {     
-        self::setVariables($mode);
+        self::setProperties($mode);
 
         switch($this->bank) {
             case 'mysql':                
@@ -29,7 +29,8 @@ class Connection {
         }
     }
 
-    public function setConnMysql() {
+    public function setConnMysql() 
+    {
         try 
         {
             $host = $this->host;
@@ -47,7 +48,8 @@ class Connection {
         }
     }
 
-    public function setConnSqlserver() {
+    public function setConnSqlserver() 
+    {
         try 
         {
             $host = $this->host;
@@ -65,11 +67,13 @@ class Connection {
         }                    
     }
 
-    public function conn() {
-        return $this->conn;
+    public function setConnPostgresql() 
+    {
+        print 'Em dev';                
     }
-
-    public function setVariables($mode) {
+    
+    public function setProperties($mode) 
+    {
         $dir_file = '';
         
         switch($mode) {
@@ -110,4 +114,8 @@ class Connection {
             throw new Exception('Unable to open or locate database.db');
         }
     }
+
+    public function conn() { return $this->conn; }
+
+    public function bank() { return $this->bank; }
 }
