@@ -31,17 +31,20 @@ class Crud implements InterfaceCrud
             $select = $this->oper->getConn()->prepare($query);
             $select->execute();
            
-            $obj = [];
+            $data = [];
 
             if ($select->rowCount() > 1)
-                $obj = $select->fetchAll(\PDO::FETCH_ASSOC);    
+                $data = $select->fetchAll(\PDO::FETCH_ASSOC);    
             else if ($select->rowCount() == 1) 
-                $obj = $select->fetch(\PDO::FETCH_ASSOC);         
+                $data = $select->fetch(\PDO::FETCH_ASSOC);         
             
             if ($this->oper->getDebug())
-                array_push($obj, ['Debug' => ['Query' => $query]]);
+                array_push($data, ['Debug' => ['Query' => $query]]);
 
-            return (object) $obj;
+            return [
+                'data' => $data,
+                'count' => $select->rowCount()
+            ];
         }
         catch (Exception $e)
         {

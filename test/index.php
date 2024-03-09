@@ -43,8 +43,7 @@ class User extends Opers {
 $user = new User;
 $user->select()       
      ->where('nome like "%cordeiro%"')  
-     ->where('status = 1')            
-     ->debug(true)
+     ->where('status = 1')                 
      ->get(); // SELECT id, nome, email FROM users INNER JOIN user_lvl on user_lvl.id = users.lvl WHERE nome like "%cordeiro%" ORDER BY id ASC LIMIT 1
 
 print_r($user->result()); // Object()

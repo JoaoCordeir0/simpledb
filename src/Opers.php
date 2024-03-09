@@ -18,6 +18,7 @@ class Opers implements InterfaceOpers
     private $leftjoin = '';    
     private $rightjoin = '';    
     private $result;       
+    private $count;
 
     public function __construct($table, $columns)
     {           
@@ -34,7 +35,9 @@ class Opers implements InterfaceOpers
     public function get() 
     {
         $crud = Helper::getCrudInstance($this->db->bank(), $this);
-        $this->result = $crud->selectDB();
+        $get = $crud->selectDB();
+        $this->result = (object) $get['data'];
+        $this->count = $get['count'];
     }
 
     public function insert() 
@@ -142,4 +145,6 @@ class Opers implements InterfaceOpers
     public function getOrderBy() { return $this->orderby; }    
 
     public function result() { return $this->result; }
+
+    public function count() { return $this->count; }
 }
