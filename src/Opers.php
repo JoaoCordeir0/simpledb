@@ -17,7 +17,7 @@ class Opers implements InterfaceOpers
     private $innerjoin = '';    
     private $leftjoin = '';    
     private $rightjoin = '';    
-    private $result = [];       
+    private $result;       
 
     public function __construct($table, $columns)
     {           
