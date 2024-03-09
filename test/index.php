@@ -28,11 +28,23 @@ class User extends Opers {
 // $user->data(['nome' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com', 'status' => 1])
 //      ->insert();
 
+// $user = new User;
+// $user->select(['id', 'nome', 'email'])  
+//      ->innerjoin('user_lvl on user_lvl.id = users.lvl')
+//      ->where('nome like "%cordeiro%"')       
+//      ->orderby()             
+//      ->limit(1)   
+//      ->debug(true)
+//      ->get(); // SELECT id, nome, email FROM users INNER JOIN user_lvl on user_lvl.id = users.lvl WHERE nome like "%cordeiro%" ORDER BY id ASC LIMIT 1
+
+// print_r($user->result()); // Object()
+
+
 $user = new User;
-$user->select(['id', 'nome', 'email'])  
-     ->where('nome like "%cordeiro%"')       
-     ->orderby()             
-     ->limit(1)     
-     ->get(); // SELECT id, nome, email FROM users WHERE nome like "%cordeiro%" ORDER BY id desc LIMIT 1
+$user->select()       
+     ->where('nome like "%cordeiro%"')  
+     ->where('status = 1')            
+     ->debug(true)
+     ->get(); // SELECT id, nome, email FROM users INNER JOIN user_lvl on user_lvl.id = users.lvl WHERE nome like "%cordeiro%" ORDER BY id ASC LIMIT 1
 
 print_r($user->result()); // Object()

@@ -104,6 +104,20 @@ class Helper {
         $where = ' WHERE ' . $where; 
         
         return $where;       
-    }       
+    }     
+    
+    public static function unpackJoin($inner = '', $left = '', $right = '') 
+    {                       
+        if (strlen($inner) > 3) {            
+            return ' INNER JOIN ' . $inner;
+        }
+        if (strlen($left) > 3) {            
+            return ' LEFT JOIN ' . $left;
+        }
+        if (strlen($right) > 3) {            
+            return ' RIGHT JOIN ' . $right;
+        }
+        return '';
+    }    
 }
 

@@ -40,10 +40,12 @@ _> composer require simpledb/simpledb
 ```php
     $user = new User;
     $user->select(['id', 'nome', 'email'])  
-        ->where('nome like "%cordeiro%"')       
-        ->orderby()             
-        ->limit(1)     
-        ->get(); // SELECT id, nome, email FROM users WHERE nome like "%cordeiro%" ORDER BY id desc LIMIT 1
+         ->innerjoin('user_lvl on user_lvl.id = users.lvl')
+         ->where('nome like "%cordeiro%"')       
+         ->orderby()             
+         ->limit(1)   
+         ->debug(true)
+         ->get(); // SELECT id, nome, email FROM users INNER JOIN user_lvl on user_lvl.id = users.lvl WHERE nome like "%cordeiro%" ORDER BY id ASC LIMIT 1
 
     print_r($user->result()); // Object()
 ```

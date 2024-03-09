@@ -9,23 +9,21 @@ class Opers implements InterfaceOpers
     private $db;
     private $table;
     private $columns;
-    private $data;
-    private $where;    
-    private $limit;
-    private $debug;
-    private $orderby;    
-    private $result;       
+    private $data = [];
+    private $where = '';    
+    private $limit = 0;
+    private $debug = false;
+    private $orderby = '';
+    private $innerjoin = '';    
+    private $leftjoin = '';    
+    private $rightjoin = '';    
+    private $result = [];       
 
-    public function __construct($table, $columns, $data = [], $where = '', $debug = false, $orderby = '', $limit = 0)
+    public function __construct($table, $columns)
     {           
         $this->db = new Connection();     
         $this->table = $table;
-        $this->columns = $columns;
-        $this->data = $data;                     
-        $this->where = $where;
-        $this->orderby = $orderby;        
-        $this->limit = $limit;        
-        $this->debug = $debug;        
+        $this->columns = $columns;        
 
         new Helper($table, $columns, $this->db->conn());    
     }  
@@ -75,8 +73,11 @@ class Opers implements InterfaceOpers
         
     public function where(string $where) 
     {
-        $this->where = $where;
-        return $this;
+        if (strlen($this->where) > 0)
+            $this->where .= ' AND ' . str_replace(['and', 'AND'], '', $where);
+        else
+            $this->where = $where;
+        return $this;   
     }   
 
     public function limit(int $limit) 
@@ -89,7 +90,25 @@ class Opers implements InterfaceOpers
     {
         $this->orderby = $col . ':' . $action;
         return $this;
-    }    
+    } 
+    
+    public function innerjoin(string $innerjoin) 
+    {
+        $this->innerjoin = $innerjoin;
+        return $this;
+    } 
+
+    public function leftjoin(string $leftjoin) 
+    {
+        $this->leftjoin = $leftjoin;
+        return $this;
+    } 
+
+    public function rightjoin(string $rightjoin) 
+    {
+        $this->rightjoin = $rightjoin;
+        return $this;
+    } 
 
     public function debug(bool $debug) 
     {
@@ -113,6 +132,12 @@ class Opers implements InterfaceOpers
     public function getLimit() { return $this->limit; }
 
     public function getDebug() { return $this->debug; }
+
+    public function getInnerJoin() { return $this->innerjoin; }
+    
+    public function getLeftJoin() { return $this->leftjoin; }
+
+    public function getRightJoin() { return $this->rightjoin; }
 
     public function getOrderBy() { return $this->orderby; }    
 

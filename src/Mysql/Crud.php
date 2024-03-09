@@ -20,11 +20,12 @@ class Crud implements InterfaceCrud
         try 
         {               
             $order = Helper::unpackOrderBy($this->oper->getOrderBy());
-            $columns = Helper::unpackColumns($this->oper->getColumns());
+            $columns = Helper::unpackColumns($this->oper->getColumns());            
+            $join = Helper::unpackJoin($this->oper->getInnerJoin(), $this->oper->getLeftJoin(), $this->oper->getRightJoin());
             $where = Helper::unpackWhere($this->oper->getWhere());
             $limit = Helper::unpackLimit($this->oper->getLimit());
 
-            $query = "SELECT " . $columns . " FROM " . $this->oper->getTable() . $where . $order . $limit;
+            $query = "SELECT " . $columns . " FROM " . $this->oper->getTable() . $join . $where . $order . $limit;
             $query = str_replace('  ', ' ', $query);
                         
             $select = $this->oper->getConn()->prepare($query);

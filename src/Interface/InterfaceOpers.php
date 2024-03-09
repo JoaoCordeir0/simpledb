@@ -20,6 +20,9 @@ interface InterfaceOpers
     public function where(string $where);
     public function limit(int $limit);
     public function orderby(string $col = 'id', string $action = 'ASC');
+    public function innerjoin(string $innerjoin);
+    public function leftjoin(string $leftjoin);
+    public function rightjoin(string $rightjoin);
     public function debug(bool $debug);
 
     /**
@@ -33,6 +36,9 @@ interface InterfaceOpers
     public function getLimit();
     public function getDebug();
     public function getOrderBy();
+    public function getInnerJoin();
+    public function getLeftJoin();
+    public function getRightJoin();
     public function result();
 }        
    

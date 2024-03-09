@@ -15,7 +15,7 @@ class Connection {
     private $db; 
     private $conn;
 
-    public function __construct($mode = 'Dev') 
+    public function __construct($mode = 'Prod') 
     {     
         self::setProperties($mode);
 
