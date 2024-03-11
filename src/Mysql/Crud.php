@@ -41,7 +41,7 @@ class Crud implements InterfaceCrud
             if ($this->oper->getDebug())
                 array_push($data, ['Debug' => ['Query' => $query]]);
 
-            return [
+            return (object) [
                 'status' => 'success',
                 'data' => $data,
                 'count' => $select->rowCount()
@@ -49,7 +49,7 @@ class Crud implements InterfaceCrud
         }
         catch (Exception $e)
         {
-            return [
+            return (object) [
                 'status' => 'error',
                 'message' => $e->getMessage(),
                 'debug' =>[
@@ -78,14 +78,14 @@ class Crud implements InterfaceCrud
             }        
             $insert->execute();
 
-            return [
+            return (object) [
                 'status' => 'success',                
                 'count' => $insert->rowCount()
             ];
         }
         catch (Exception $e)
         {
-            return [
+            return (object) [
                 'status' => 'error',
                 'message' => $e->getMessage(),
                 'debug' =>[

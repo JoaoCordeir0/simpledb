@@ -36,8 +36,8 @@ class Opers implements InterfaceOpers
     {
         $crud = Helper::getCrudInstance($this->db->bank(), $this);
         $get = $crud->selectDB();
-        $this->result = (object) $get['data'];
-        $this->count = $get['count'];
+        $this->result = (object) $get->data;
+        $this->count = $get->count;
     }
 
     public function insert() 

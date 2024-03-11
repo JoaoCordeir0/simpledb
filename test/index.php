@@ -28,6 +28,8 @@ class User extends Opers {
 // $user->data(['nome' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com', 'status' => 1])
 //      ->insert();
 
+// print $user->result()->status;
+
 // $user = new User;
 // $user->select(['id', 'nome', 'email'])  
 //      ->innerjoin('user_lvl on user_lvl.id = users.lvl')
