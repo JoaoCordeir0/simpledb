@@ -43,7 +43,7 @@ class Opers implements InterfaceOpers
     public function insert() 
     {
         $crud = Helper::getCrudInstance($this->db->bank(), $this);
-        $crud->insertDB();
+        $this->result = $crud->insertDB();        
     }
 
     public function update() 
