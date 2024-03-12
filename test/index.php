@@ -15,7 +15,7 @@ class User extends Opers {
     ];
 
     public function __construct() {        
-        parent::__construct($this->table, $this->columns);
+        parent::__construct($this->table, $this->columns, false);
     }   
 }
 

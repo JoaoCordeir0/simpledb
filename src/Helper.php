@@ -2,21 +2,21 @@
 
 namespace SimpleDB;
 
-use Exception;
-
 class Helper {
  
     private $conn;
     private $table;
     private $columns;   
 
-    public function __construct($table, $columns, $conn)
+    public function __construct($table, $columns, $conn, $checktable)
     {
         $this->table = $table;
         $this->columns = $columns;        
         $this->conn = $conn;        
 
-        self::checkTableExists();
+        if ($checktable) {
+            self::checkTableExists();          
+        }            
     }
 
     public static function getCrudInstance($bank, $obj)

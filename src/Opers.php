@@ -20,13 +20,13 @@ class Opers implements InterfaceOpers
     private $result;       
     private $count;
 
-    public function __construct($table, $columns)
+    public function __construct($table, $columns, $checktable = true)
     {           
         $this->db = new Connection();     
         $this->table = $table;
         $this->columns = $columns;        
 
-        new Helper($table, $columns, $this->db->conn());    
+        new Helper($table, $columns, $this->db->conn(), $checktable);    
     }  
 
     /**
