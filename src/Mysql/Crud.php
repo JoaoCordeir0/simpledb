@@ -32,30 +32,33 @@ class Crud implements InterfaceCrud
             $select->execute();
            
             $data = [];
+            $rowCount = $select->rowCount();            
 
-            if ($select->rowCount() > 1)
+            if ($rowCount > 1)
                 $data = $select->fetchAll(\PDO::FETCH_ASSOC);    
-            else if ($select->rowCount() == 1) 
-                $data = $select->fetch(\PDO::FETCH_ASSOC);         
-            
-            if ($this->oper->getDebug())
-                array_push($data, ['Debug' => ['Query' => $query]]);
+            else if ($rowCount == 1) 
+                $data = $select->fetch(\PDO::FETCH_ASSOC);    
 
             return (object) [
                 'status' => 'success',
                 'data' => $data,
-                'count' => $select->rowCount()
+                'count' => $rowCount,
+                'debug' => [
+                    'query' => $query
+                ]
             ];
         }
         catch (Exception $e)
         {
-            return (object) [
+            print_r((object) [
                 'status' => 'error',
-                'message' => $e->getMessage(),
-                'debug' =>[
-                    'Query' => $query
+                'message' => $e->getMessage(),                
+                'debug' => [
+                    'query' => $query
                 ]
-            ];            
+            ]);         
+
+            return null;
         }              
     } 
 
@@ -80,18 +83,23 @@ class Crud implements InterfaceCrud
 
             return (object) [
                 'status' => 'success',                
-                'count' => $insert->rowCount()
+                'count' => $insert->rowCount(),
+                'debug' => [
+                    'query' => $query
+                ]
             ];
         }
         catch (Exception $e)
         {
-            return (object) [
+            print_r((object) [
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => $e->getMessage(),                
                 'debug' =>[
-                    'Query' => $query
+                    'query' => $query
                 ]
-            ];    
+            ]);    
+
+            return null;
         }
     }      
 
@@ -102,7 +110,33 @@ class Crud implements InterfaceCrud
 
     public function deleteDB() 
     {
-        echo "Linha deletada na tabela -> " . $this->oper->getTable() . PHP_EOL;
+        try
+        {            
+            $query = "DELETE FROM " . $this->oper->getTable() . Helper::unpackWhere($this->oper->getWhere()); 
+                        
+            $delete = $this->oper->getConn()->prepare($query);
+            $delete->execute();
+
+            return (object) [
+                'status' => 'success',                
+                'count' => $delete->rowCount(),
+                'debug' => [
+                    'query' => $query
+                ]
+            ];
+        }
+        catch (Exception $e)
+        {
+            print_r((object) [
+                'status' => 'error',
+                'message' => $e->getMessage(),                
+                'debug' =>[
+                    'query' => $query
+                ]
+            ]);    
+
+            return null;
+        }
     }     
 }
 

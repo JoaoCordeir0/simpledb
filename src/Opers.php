@@ -12,7 +12,7 @@ class Opers implements InterfaceOpers
     private $data = [];
     private $where = '';    
     private $limit = 0;
-    private $debug = false;
+    private $debug = '';
     private $orderby = '';
     private $innerjoin = '';    
     private $leftjoin = '';    
@@ -35,9 +35,13 @@ class Opers implements InterfaceOpers
     public function get() 
     {
         $crud = Helper::getCrudInstance($this->db->bank(), $this);
-        $get = $crud->selectDB();
-        $this->result = (object) $get->data;
-        $this->count = $get->count;
+        $get = $crud->selectDB();            
+        if ($get != null) 
+        {
+            $this->result = (object) $get->data;
+            $this->count = $get->count;
+            $this->debug = $get->debug;
+        }        
     }
 
     public function insert() 
@@ -49,13 +53,13 @@ class Opers implements InterfaceOpers
     public function update() 
     {
         $crud = Helper::getCrudInstance($this->db->bank(), $this);
-        $crud->updateDB();
+        $this->result = $crud->updateDB();
     }
 
     public function delete() 
     {
         $crud = Helper::getCrudInstance($this->db->bank(), $this);
-        $crud->deleteDB();
+        $this->result = $crud->deleteDB();
     }
 
     /**
@@ -97,27 +101,30 @@ class Opers implements InterfaceOpers
     
     public function innerjoin(string $innerjoin) 
     {
-        $this->innerjoin = $innerjoin;
-        return $this;
+        if (strlen($this->innerjoin) > 0)
+            $this->innerjoin .= ':' . $innerjoin;
+        else
+            $this->innerjoin = $innerjoin;
+        return $this;        
     } 
 
     public function leftjoin(string $leftjoin) 
     {
-        $this->leftjoin = $leftjoin;
-        return $this;
+        if (strlen($this->leftjoin) > 0)
+            $this->leftjoin .= ':' . $leftjoin;
+        else
+            $this->leftjoin = $leftjoin;
+        return $this; 
     } 
 
     public function rightjoin(string $rightjoin) 
     {
-        $this->rightjoin = $rightjoin;
-        return $this;
+        if (strlen($this->rightjoin) > 0)
+            $this->rightjoin .= ':' . $rightjoin;
+        else
+            $this->rightjoin = $rightjoin;
+        return $this; 
     } 
-
-    public function debug(bool $debug) 
-    {
-        $this->debug = $debug;
-        return $this;
-    }
 
     /**
      * Getters
@@ -134,8 +141,6 @@ class Opers implements InterfaceOpers
 
     public function getLimit() { return $this->limit; }
 
-    public function getDebug() { return $this->debug; }
-
     public function getInnerJoin() { return $this->innerjoin; }
     
     public function getLeftJoin() { return $this->leftjoin; }
@@ -147,4 +152,6 @@ class Opers implements InterfaceOpers
     public function result() { return $this->result; }
 
     public function count() { return $this->count; }
+
+    public function debug() { return $this->debug; }
 }

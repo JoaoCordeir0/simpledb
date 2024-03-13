@@ -22,8 +22,7 @@ interface InterfaceOpers
     public function orderby(string $col = 'id', string $action = 'ASC');
     public function innerjoin(string $innerjoin);
     public function leftjoin(string $leftjoin);
-    public function rightjoin(string $rightjoin);
-    public function debug(bool $debug);
+    public function rightjoin(string $rightjoin);    
 
     /**
      * Getters
@@ -33,13 +32,14 @@ interface InterfaceOpers
     public function getConn();
     public function getData();
     public function getWhere();
-    public function getLimit();
-    public function getDebug();
+    public function getLimit();    
     public function getOrderBy();
     public function getInnerJoin();
     public function getLeftJoin();
-    public function getRightJoin();
+    public function getRightJoin();    
     public function result();
+    public function debug();
+    public function count();
 }        
    
 

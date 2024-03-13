@@ -43,9 +43,19 @@ _> composer require simpledb/simpledb
          ->innerjoin('user_lvl on user_lvl.id = users.lvl')
          ->where('nome like "%cordeiro%"')       
          ->orderby()             
-         ->limit(1)   
-         ->debug(true)
+         ->limit(1)          
          ->get(); // SELECT id, nome, email FROM users INNER JOIN user_lvl on user_lvl.id = users.lvl WHERE nome like "%cordeiro%" ORDER BY id ASC LIMIT 1
 
     print_r($user->result()); // Object()
+```
+
+
+###### Delete -> 
+
+```php
+    $id = 5;
+    $user = new User();
+    $user->where("id = {$id}")
+         ->debug(true)
+         ->delete(); // "DELETE FROM users WHERE id = 5"
 ```

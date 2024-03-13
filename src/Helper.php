@@ -107,17 +107,29 @@ class Helper {
     }     
     
     public static function unpackJoin($inner = '', $left = '', $right = '') 
-    {                       
+    {                      
+        $join = '';
+ 
         if (strlen($inner) > 3) {            
-            return ' INNER JOIN ' . $inner;
+            foreach (explode(':', $inner) as $i)
+            {
+                $join .= ' INNER JOIN ' . $i;
+            }
         }
         if (strlen($left) > 3) {            
-            return ' LEFT JOIN ' . $left;
+            foreach (explode(':', $left) as $l)
+            {
+                $join .= ' LEFT JOIN ' . $l;
+            }
         }
         if (strlen($right) > 3) {            
-            return ' RIGHT JOIN ' . $right;
+            foreach (explode(':', $right) as $r)
+            {
+                $join .= ' RIGHT JOIN ' . $r;
+            }
         }
-        return '';
+                
+        return $join;
     }    
 }
 
