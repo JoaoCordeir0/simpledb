@@ -15,7 +15,7 @@ class Crud implements InterfaceCrud
         $this->oper = $oper;       
     }
     
-    public function selectDB() 
+    public function selectDB($object) 
     {   
         try 
         {               
@@ -34,7 +34,7 @@ class Crud implements InterfaceCrud
             $data = [];
             $rowCount = $select->rowCount();            
 
-            if ($rowCount > 1)
+            if ($rowCount > 1 || $object)
                 $data = $select->fetchAll(\PDO::FETCH_ASSOC);    
             else if ($rowCount == 1) 
                 $data = $select->fetch(\PDO::FETCH_ASSOC);    

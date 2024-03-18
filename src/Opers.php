@@ -32,10 +32,10 @@ class Opers implements InterfaceOpers
     /**
      * Opers
      */       
-    public function get() 
+    public function get($object = false) 
     {
         $crud = Helper::getCrudInstance($this->db->bank(), $this);
-        $get = $crud->selectDB();            
+        $get = $crud->selectDB($object);            
         if ($get != null) 
         {
             $this->result = (object) $get->data;

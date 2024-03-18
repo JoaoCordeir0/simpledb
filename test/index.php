@@ -44,7 +44,7 @@ class User extends Opers {
 
 $user = new User;
 $user->select()                   
-     ->get();
+     ->get($object = true);
 
 print_r($user->result()); // Object()
 print_r($user->debug()); // Object()

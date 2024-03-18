@@ -7,7 +7,7 @@ interface InterfaceCrud
     /**
      * Functions 
      */
-    public function selectDB();
+    public function selectDB(bool $object);
     public function insertDB();
     public function updateDB();
     public function deleteDB();
