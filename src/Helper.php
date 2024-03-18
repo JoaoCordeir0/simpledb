@@ -65,8 +65,14 @@ class Helper {
         $strColumns = '';        
         foreach ($columns as $column) {
             if (stripos($column, ':') !== false) {
-                $exp = explode(':', $column);
-                $strColumns .= $exp[0] . ', ';                
+                if ($action == 'update') {
+                    $exp = explode(':', $column);
+                    $strColumns .= $exp[0] . ' = ?, ';
+                    $flagSingleColumns = true;
+                } else {
+                    $exp = explode(':', $column);
+                    $strColumns .= $exp[0] . ', ';                
+                }                
             } else {
                 $strColumns .= $column . ', ';
                 $flagSingleColumns = true;

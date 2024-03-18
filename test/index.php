@@ -42,12 +42,12 @@ class User extends Opers {
 // print_r($user->result()); // Object()
 
 
-$user = new User;
-$user->select()                   
-     ->get($object = true);
+// $user = new User;
+// $user->select()                   
+//      ->get($object = true);
 
-print_r($user->result()); // Object()
-print_r($user->debug()); // Object()
+// print_r($user->result()); // Object()
+// print_r($user->debug()); // Object()
 
 
 // $id = 5;
@@ -56,3 +56,11 @@ print_r($user->debug()); // Object()
 //      ->delete();
 
 // var_dump($user->result());
+
+$id = 3;
+$user = new User();
+$user->data(['nome' => 'João Cordeiro', 'email' => 'jvc2134@gmail.com', 'status' => 1])
+     ->where("id = {$id}")    
+     ->update();
+
+var_dump($user->result());

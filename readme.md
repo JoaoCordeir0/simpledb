@@ -24,15 +24,7 @@ _> composer require simpledb/simpledb
     }
 ```
 
-###### Comands with table:
-
-###### Insert -> 
-
-```php
-    $user = new User();
-    $user->data(['nome' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com', 'status' => 1])
-         ->insert();
-```
+###### Comands:
 
 
 ###### Select -> 
@@ -50,6 +42,15 @@ _> composer require simpledb/simpledb
 ```
 
 
+###### Insert -> 
+
+```php
+    $user = new User();
+    $user->data(['nome' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com', 'status' => 1])
+         ->insert();
+```
+
+
 ###### Delete -> 
 
 ```php
@@ -58,4 +59,15 @@ _> composer require simpledb/simpledb
     $user->where("id = {$id}")
          ->debug(true)
          ->delete(); // "DELETE FROM users WHERE id = 5"
+```
+
+
+###### Update -> 
+
+```php   
+    $id = 3;
+    $user = new User();
+    $user->data(['nome' => 'João Cordeiro', 'email' => 'jvc2134@gmail.com', 'status' => 1])
+         ->where("id = {$id}")    
+         ->update(); // "UPDATE users SET nome = ?, email = ?, status = ? WHERE id = 3"
 ```

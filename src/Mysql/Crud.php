@@ -105,7 +105,43 @@ class Crud implements InterfaceCrud
 
     public function updateDB() 
     {
-        echo "Linha atualizada na tabela -> " . $this->oper->getTable() . PHP_EOL;
+        try 
+        {                        
+            $columns = Helper::unpackColumns($this->oper->getColumns(), 'update');          
+            $where = Helper::unpackWhere($this->oper->getWhere());  
+
+            $query = "UPDATE " . $this->oper->getTable() . " SET " . $columns . $where;       
+
+            $update = $this->oper->getConn()->prepare($query);                    
+            $c = 1;
+            foreach ($this->oper->getColumns() as $column) 
+            {
+                $col = explode(':', $column);                            
+                $update->bindParam($c, $this->oper->getData()[$col[0]], $col[2] == 'int' ? \PDO::PARAM_INT : \PDO::PARAM_STR);                
+                $c++;
+            }        
+            $update->execute();
+
+            return (object) [
+                'status' => 'success',                
+                'count' => $update->rowCount(),
+                'debug' => [
+                    'query' => $query
+                ]
+            ];
+        }
+        catch (Exception $e)
+        {
+            print_r((object) [
+                'status' => 'error',
+                'message' => $e->getMessage(),                
+                'debug' =>[
+                    'query' => $query
+                ]
+            ]);    
+
+            return null;
+        }
     } 
 
     public function deleteDB() 
