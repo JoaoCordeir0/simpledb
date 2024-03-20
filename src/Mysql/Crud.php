@@ -69,7 +69,7 @@ class Crud implements InterfaceCrud
             $interrogation = substr(str_repeat('?,', count($this->oper->getColumns())), 0, -1); 
             $columns = Helper::unpackColumns($this->oper->getColumns(), 'insert');            
 
-            $query = "INSERT INTO " . $this->oper->getTable() . " (" . $columns . ") VALUES (" . $interrogation . ")";       
+            $query = "INSERT INTO " . $this->oper->getTable() . " ({$columns}) VALUES ({$interrogation})";       
 
             $insert = $this->oper->getConn()->prepare($query);                    
             $c = 1;
@@ -84,6 +84,7 @@ class Crud implements InterfaceCrud
             return (object) [
                 'status' => 'success',                
                 'count' => $insert->rowCount(),
+                'returnid' => $this->oper->getConn()->lastInsertId(),
                 'debug' => [
                     'query' => $query
                 ]
