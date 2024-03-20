@@ -49,16 +49,16 @@ class Crud implements InterfaceCrud
             ];
         }
         catch (Exception $e)
-        {
-            print_r((object) [
+        {     
+            return (object) [
                 'status' => 'error',
+                'data' => [],
+                'count' => 0,
                 'message' => $e->getMessage(),                
                 'debug' => [
                     'query' => $query
                 ]
-            ]);         
-
-            return null;
+            ];                 
         }              
     } 
 
@@ -91,15 +91,13 @@ class Crud implements InterfaceCrud
         }
         catch (Exception $e)
         {
-            print_r((object) [
+            return (object) [
                 'status' => 'error',
                 'message' => $e->getMessage(),                
                 'debug' =>[
                     'query' => $query
                 ]
-            ]);    
-
-            return null;
+            ];    
         }
     }      
 
@@ -132,15 +130,13 @@ class Crud implements InterfaceCrud
         }
         catch (Exception $e)
         {
-            print_r((object) [
+            return (object) [
                 'status' => 'error',
                 'message' => $e->getMessage(),                
                 'debug' =>[
                     'query' => $query
                 ]
-            ]);    
-
-            return null;
+            ];            
         }
     } 
 
@@ -163,15 +159,13 @@ class Crud implements InterfaceCrud
         }
         catch (Exception $e)
         {
-            print_r((object) [
+            return (object) [
                 'status' => 'error',
                 'message' => $e->getMessage(),                
                 'debug' =>[
                     'query' => $query
                 ]
-            ]);    
-
-            return null;
+            ];    
         }
     }     
 }
