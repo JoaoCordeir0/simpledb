@@ -63,16 +63,13 @@ class Helper {
     {        
         $flagSingleColumns = false;
         $strColumns = '';        
-        foreach ($columns as $column) {
-            if (stripos($column, ':') !== false) {
-                if ($action == 'update') {
-                    $exp = explode(':', $column);
-                    $strColumns .= $exp[0] . ' = ?, ';
-                    $flagSingleColumns = true;
-                } else {
-                    $exp = explode(':', $column);
-                    $strColumns .= $exp[0] . ', ';                
-                }                
+        foreach ($columns as $key => $column) {
+            if ($action == 'update') {
+                $strColumns .= $key . ' = ?, ';
+                $flagSingleColumns = true;
+            } else if (stripos($column, ':') !== false) {               
+                $exp = explode(':', $column);
+                $strColumns .= $exp[0] . ', ';                                            
             } else {
                 $strColumns .= $column . ', ';
                 $flagSingleColumns = true;

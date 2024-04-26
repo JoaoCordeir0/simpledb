@@ -24,11 +24,11 @@ class User extends Opers {
 // $conn = new Connection();
 // $conn->conn();
 
-$user = new User();
-$user->data(['nome' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com', 'status' => 1])
-     ->insert();
+// $user = new User();
+// $user->data(['nome' => 'João Victor Cordeiro', 'email' => 'joaocordeiro2134@gmail.com', 'status' => 1])
+//      ->insert();
 
-print_r($user->result()->returnid);
+// print_r($user->result()->returnid);
 
 // print $user->result()->status;
 
@@ -59,10 +59,10 @@ print_r($user->result()->returnid);
 
 // var_dump($user->result());
 
-// $id = 3;
-// $user = new User();
-// $user->data(['nome' => 'João Cordeiro', 'email' => 'jvc2134@gmail.com', 'status' => 1])
-//      ->where("id = {$id}")    
-//      ->update();
+$id = 3;
+$user = new User();
+$user->data(['nome' => 'Cordeiro', 'email' => 'teste@1'])
+     ->where("id = {$id}")    
+     ->update();
 
-// var_dump($user->result());
+var_dump($user->result());
