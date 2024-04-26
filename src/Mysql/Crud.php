@@ -121,8 +121,8 @@ class Crud implements InterfaceCrud
                 $col = explode(':', $column);                   
                 if (array_key_exists($col[0], $data)) {
                     $update->bindParam($c, $data[$col[0]], $col[2] == 'int' ? \PDO::PARAM_INT : \PDO::PARAM_STR);                
-                }                
-                $c++;
+                    $c++;
+                }                                
             }             
             $update->execute();                                
 
