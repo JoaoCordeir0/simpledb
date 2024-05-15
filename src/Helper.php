@@ -142,7 +142,7 @@ class Helper {
     }    
 
     public static function firewall($query) {
-        $array = ['SELECT', 'DROP', 'DELETE', 'UPDATE', 'INSERT'];
+        $array = ['DROP', 'DELETE', 'UPDATE', 'INSERT'];
 
         foreach ($array as $string) {
             if (stripos($query, $string) !== false) {
