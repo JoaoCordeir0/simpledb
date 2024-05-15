@@ -2,6 +2,9 @@
 
 namespace SimpleDB;
 
+use Exception;
+use mysqli_sql_exception;
+
 class Helper {
  
     private $conn;
@@ -105,7 +108,10 @@ class Helper {
         }
 
         $where = ' WHERE ' . $where; 
-        
+
+        if (self::firewall($where)) {
+            throw new Exception("Blocked syntax -> {$where}");
+        }        
         return $where;       
     }     
     
@@ -134,5 +140,16 @@ class Helper {
                 
         return $join;
     }    
+
+    public static function firewall($query) {
+        $array = ['SELECT', 'DROP', 'DELETE', 'UPDATE', 'INSERT'];
+
+        foreach ($array as $string) {
+            if (stripos($query, $string) !== false) {
+                return true; 
+            }
+        }
+        return false; 
+    }
 }
 
